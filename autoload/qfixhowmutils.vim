@@ -16,16 +16,27 @@ function! qfixhowmutils#buildHowmDiaryFilePath(time)
 endfunction
 
 function! qfixhowmutils#howmFilePath(filepath)
-	let s:filepath = substitute(expand(a:filepath.":p"),'\\','/','g')
-	let s:expanded_howm_dir = substitute(expand(g:howm_dir),'\\','/','g')
-	return substitute(s:filepath,s:expanded_howm_dir,"howm://",'g')
+	let l:filepath = substitute(expand(a:filepath.":p"),'\\','/','g')
+	let l:expanded_howm_dir = substitute(expand(g:howm_dir),'\\','/','g')
+	return substitute(l:filepath,l:expanded_howm_dir,"howm://",'g')
 endfunction
 
-function! qfixhowmutils#getTimeFromFileName(filename)
+function! qfixhowmutils#buildTimeFromFileName(filename)
 	try
-		let [s:year,s:month,s:date,_] = split(expand(a:filename.":t:r"),"-")
+		let [l:year,l:month,l:date,_] = split(expand(a:filename.":t:r"),"-")
 	catch //
 		return ""
 	endtry
-	return datelib#StrftimeCnvDoWShift(s:year,s:month,s:date,"",0)
+	if l:date == "00"
+		let l:date = "01"
+	endif
+	return datelib#StrftimeCnvDoWShift(l:year,l:month,l:date,"",0)
+endfunction
+
+function! qfixhowmutils#buildMonthlyFilePath(time)
+	return strftime(g:howm_dir . "/%Y/%m/%Y-%m-00-000000.txt",a:time)
+endfunction
+
+function! qfixhowmutils#shiftDate(t,n)
+	return a:t + a:n * 86400	
 endfunction

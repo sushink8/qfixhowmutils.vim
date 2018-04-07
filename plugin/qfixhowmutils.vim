@@ -22,13 +22,13 @@ endfunction
 let g:qfixhowmstylelistcount_bar_done = "="
 let g:qfixhowmstylelistcount_bar_todo = "-"
 function! BarTodo(length)
-	let s:left = g:qfixhowmstylelistcount_bar_done
-	let s:right = g:qfixhowmstylelistcount_bar_todo
+	let l:left = g:qfixhowmstylelistcount_bar_done
+	let l:right = g:qfixhowmstylelistcount_bar_todo
 	let l:lp = s:listProgress()
-	let s:done_ratio =(l:lp[0] * 1.0 ) / (l:lp[1] * 1.0 )
-	let s:bar = repeat(s:left , float2nr(a:length * s:done_ratio))
-	let s:bar = s:bar . repeat(s:right,a:length-len(s:bar))
-	return s:bar
+	let l:done_ratio =(l:lp[0] * 1.0 ) / (l:lp[1] * 1.0 )
+	let l:bar = repeat(l:left , float2nr(a:length * l:done_ratio))
+	let l:bar = l:bar . repeat(l:right,a:length-len(l:bar))
+	return l:bar
 endfunction
 
 function! YankCurrentHowmFileLink()
@@ -36,13 +36,20 @@ function! YankCurrentHowmFileLink()
 endfunction
 
 function! AppendDiaryLinks()
-	let s:time = TimeFromCurrentFileName()
-	if s:time == ""
+	let l:time = TimeFromCurrentFileName()
+	if l:time == ""
 		return ""
 	endif
-	call append(".",BuildHowmDiaryFileLink( ShiftDate(s:time, 1) ))
-	call append(".",BuildHowmDiaryFileLink( ShiftDate(s:time,-1) ))
+	call append(".",
+		\[BuildHowmDiaryFileLink( qfixhowmutils#shiftDate(l:time,-1) ),
+		\ BuildHowmDiaryFileLink( qfixhowmutils#shiftDate(l:time, 1) )
+		\])
 	return ""
+endfunction
+
+function! AppendMonthlyLinks()
+	let l:time = TimeFromCurrentFileName()
+	" TODO
 endfunction
 
 function! BuildHowmDiaryFileLink(time)
@@ -50,9 +57,10 @@ function! BuildHowmDiaryFileLink(time)
 endfunction
 
 function! TimeFromCurrentFileName()
-	return qfixhowmutils#getTimeFromFileName("%")
+	return qfixhowmutils#buildTimeFromFileName("%")
 endfunction
 
-function! ShiftDate(t,n)
-	return a:t + a:n * 86400	
+
+function! MonthlyFile()
+	execute "edit " . qfixhowmutils#buildMonthlyFilePath(localtime())
 endfunction
