@@ -60,7 +60,6 @@ function! TimeFromCurrentFileName()
 	return qfixhowmutils#buildTimeFromFileName("%")
 endfunction
 
-
 function! MonthlyFile()
 	execute "edit " . qfixhowmutils#buildMonthlyFilePath(localtime())
 endfunction
