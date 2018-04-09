@@ -1,14 +1,29 @@
 
-function! qfixhowmutils#count(reg)
-  let l:lines = getline(0,"$")
-  let l:c = 0
-	" echo a:reg
-  for line in lines
-    if match(line,a:reg) >= 0
-      let l:c = l:c + 1
-    endif 
-  endfor
-  return l:c
+" function! qfixhowmutils#count(regex)
+"   let l:lines = getline(0,"$")
+"   let l:c = 0
+" 	" echo a:regex
+"   for line in lines
+"     if match(line,a:regex) >= 0
+"       let l:c = l:c + 1
+"     endif 
+"   endfor
+"   return l:c
+" endfunction
+
+function! qfixhowmutils#countRegexCurrentFile(regex)
+	return qfixhowmutils#countRegex(getline(0,"$"),a:regex)
+endfunction
+
+
+function! qfixhowmutils#countRegex(lines,regex)
+	let l:c = 0
+	for line in a:lines
+		if match(line,a:regex) >= 0
+			let l:c = l:c + 1
+		endif
+	endfor
+	return l:c
 endfunction
 
 function! qfixhowmutils#buildHowmDiaryFilePath(time)
