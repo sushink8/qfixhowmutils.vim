@@ -7,10 +7,6 @@ function! s:listProgress()
 	return [l:count_done , l:count_all_list]
 endfunction
 
-function! Hoge()
-
-endfunction
-
 function! CountTodo()
 	let l:lp = s:listProgress()
 	return l:lp[0] . "/" . l:lp[1]
