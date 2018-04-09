@@ -1,9 +1,14 @@
 
 
 function! s:listProgress()
-	let l:count_all_list = qfixhowmutils#count("^\\s*[-*]\\?\\s*{.}") + qfixhowmutils#count("{.}\\s*$")
-	let l:count_done = qfixhowmutils#count("^\\s*[-*]\\?\\s*{[^ ]}") + qfixhowmutils#count("{[^ ]}\\s*$")
+	let lines = getline(0,"$")
+	let l:count_all_list = qfixhowmutils#countRegex(lines,"^\\s*[-*]\\?\\s*{.}") + qfixhowmutils#countRegex(lines,"{.}\\s*$")
+	let l:count_done = qfixhowmutils#countRegex(lines,"^\\s*[-*]\\?\\s*{[^ ]}") + qfixhowmutils#countRegex(lines,"{[^ ]}\\s*$")
 	return [l:count_done , l:count_all_list]
+endfunction
+
+function! Hoge()
+
 endfunction
 
 function! CountTodo()
