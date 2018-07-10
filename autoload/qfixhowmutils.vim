@@ -12,8 +12,8 @@ function! qfixhowmutils#countInDir(dir,displayfunction)
 	return ret
 endfunction
 
-function! qfixhowmutils#showProgress(dir,displayfunction,hiddencomplete)
-	let l:qflist = qfixlist#grep("{.}",a:dir,"**/")
+function! qfixhowmutils#showProgress(dir,displayfunction,file,hiddencomplete)
+	let l:qflist = qfixlist#grep("{.}",a:dir,a:file)
 	let l:files = {}
 	let l:qflist2 = []
 	for i in l:qflist
