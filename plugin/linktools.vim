@@ -21,5 +21,5 @@ function! AppendMonthlyLinks()
 endfunction
 
 function! BuildHowmDiaryFileLink(time)
-	return ">>> " . qfixhowmutils#buildHowmDiaryFilePath(a:time)
+	return qfixhowmutils#buildHowmDiaryFilePath(a:time)
 endfunction
