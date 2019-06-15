@@ -96,6 +96,12 @@ function! qfixhowmutils#shiftDate(t,n)
 	return a:t + a:n * 86400	
 endfunction
 
+function! qfixhowmutils#dateByHowmFileName(path,sep)
+	let l:basename = fnamemodify(a:path,":t")
+	let [l:y , l:m , l:d , l:s ] = split(l:basename , "-")
+	return printf("%s%s%s%s%s",l:y, a:sep, l:m, a:sep, l:d)
+endfunction
+
 function! qfixhowmutils#listProgress(lines)
 	let lines = a:lines
 	let l:count_all_list = qfixhowmutils#countRegex(lines,'^\s*[-*]\?\s*{.}\|{.}\s*$')
