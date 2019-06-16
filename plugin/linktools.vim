@@ -17,6 +17,9 @@ endfunction
 
 function! AppendMonthlyLinks()
 	let l:time = TimeFromCurrentFileName()
+	if l:time == ""
+		return ""
+	endif
 	" TODO
 endfunction
 
@@ -26,6 +29,9 @@ endfunction
 
 function! AppendMonthlyIndexes()
 	let l:time = TimeFromCurrentFileName()
+	if l:time == ""
+		return ""
+	endif
 	let [ l:y , l:m ,l:_d ] = qfixhowmutils#Int2Date( l:time )
 	let l:links = []
 	for l:d in range(1,31)
