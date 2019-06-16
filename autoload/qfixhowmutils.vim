@@ -102,6 +102,10 @@ function! qfixhowmutils#dateByHowmFileName(path,sep)
 	return printf("%s%s%s%s%s",l:y, a:sep, l:m, a:sep, l:d)
 endfunction
 
+function! qfixhowmutils#Int2Date(int)
+	return split( strftime( "%Y-%m-%d" , a:int ) , "-" )
+endfunction
+
 function! qfixhowmutils#listProgress(lines)
 	let lines = a:lines
 	let l:count_all_list = qfixhowmutils#countRegex(lines,'^\s*[-*]\?\s*{.}\|{.}\s*$')
