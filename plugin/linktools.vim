@@ -15,12 +15,12 @@ function! AppendDiaryLinks()
 	return ""
 endfunction
 
-function! AppendMonthlyLinks()
+function! BuildMonthlyLinks()
 	let l:time = TimeFromCurrentFileName()
 	if l:time == ""
 		return ""
 	endif
-	" TODO
+	return qfixhowmutils#buildHowmMonthlyFilePath(l:time)
 endfunction
 
 function! BuildHowmDiaryFileLink(time)
@@ -33,7 +33,7 @@ function! AppendMonthlyIndexes()
 		return ""
 	endif
 	let [ l:y , l:m ,l:_d ] = qfixhowmutils#Int2Date( l:time )
-	let l:links = []
+	let l:links = [ BuildMonthlyLinks() ]
 	for l:d in range(1,31)
 		let l:d_int = datelib#Date2IntStrftime( l:y , l:m , l:d ) * 24 * 60 * 60
 		let [l:y2 , l:m2 , l:d2 ] = qfixhowmutils#Int2Date( l:d_int )
@@ -42,5 +42,5 @@ function! AppendMonthlyIndexes()
 		endif
 		call add(l:links, BuildHowmDiaryFileLink( l:d_int ))
 	endfor
-	return l:links
+	call append(".", l:links)
 endfunction

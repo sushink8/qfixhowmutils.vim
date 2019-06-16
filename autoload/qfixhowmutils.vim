@@ -70,6 +70,13 @@ function! qfixhowmutils#buildHowmDiaryFilePath(time)
 	return strftime("howm://" . g:QFixHowm_DiaryFile ,a:time)
 endfunction
 
+function! qfixhowmutils#buildHowmMonthlyFilePath(time)
+	if !exists('g:QFixHowm_MonthlyFile')
+		let g:QFixHowm_MonthlyFile = substitute( g:QFixHowm_DiaryFile , "%d" , "00" , "g" )
+	endif
+	return strftime("howm://" . g:QFixHowm_MonthlyFile , a:time )
+endfunction
+
 function! qfixhowmutils#howmFilePath(filepath)
 	let l:filepath = substitute(expand(a:filepath.":p"),'\\','/','g')
 	let l:expanded_howm_dir = substitute(expand(g:howm_dir),'\\','/','g')
