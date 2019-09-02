@@ -1,6 +1,10 @@
 
-function! YankCurrentHowmFileLink()
-	let @" = ">>> " . qfixhowmutils#howmFilePath("%") . "\n"
+function! YankCurrentHowmFileLink(...)
+	let s:prefix = ""
+	if a:0 > 0
+		let s:prefix = a:1 . " "
+	endif
+	let @" = s:prefix . qfixhowmutils#howmFilePath("%") . "\n"
 endfunction
 
 function! AppendDiaryLinks()
