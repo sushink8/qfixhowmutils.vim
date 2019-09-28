@@ -83,6 +83,20 @@ function! qfixhowmutils#howmFilePath(filepath)
 	return substitute(l:filepath,l:expanded_howm_dir,"howm:/",'g')
 endfunction
 
+function! qfixhowmutils#buildTimeFromDate(date)
+	try
+		let l:match = matchstr( a:date ,'\d\{4\}-\d\d-\d\d' ,0)
+		if l:match == ""
+			return ""
+		endif
+		let [ l:year , l:month , l:date ] = split( l:match , "-" )
+	catch //
+		echoerr v:exception
+		return ""
+	endtry
+	return datelib#StrftimeCnvDoWShift(l:year,l:month,l:date,"",0)	
+endfunction
+
 function! qfixhowmutils#buildTimeFromFileName(filename)
 	try
 		let [l:year,l:month,l:date,_] = split(expand(a:filename.":t:r"),"-")
@@ -124,3 +138,45 @@ function! qfixhowmutils#bufopen(path)
 	let path = a:path
 	silent! execute ':args ' . path
 endfunction
+
+function! qfixhowmutils#globalRename()
+    let l:from = substitute( fnamemodify(expand('%'), ':p' ), '\\','/','g')
+    while 1
+        let l:to = input('Rename to : ' , l:from )
+        if l:to == ''
+            return
+        endif
+        "let l:to = substitute(l:to, '[/:*?"<>|\\]', '_', 'g')
+        let l:to = substitute(l:to, '[*?"<>|]', '_', 'g')
+        let l:to = substitute(l:to, '^\s*\|\s*$', '', 'g')
+        if l:to !~ '\.' . fnamemodify(l:from, ':e')
+            let l:to = l:to .  '.' . fnamemodify(l:from, ':e')
+        endif
+        if  filereadable( l:to )
+            let l:mes = printf( '"%s" already exists.' , l:to )
+            let l:choice = confirm( l:mes , "&Input name\n&Overwrite\n&Cancel",1,"Q")
+            if l:choice == 1
+                let l:to = ''
+                continue
+            elseif choice != 2
+                return
+            else
+                break
+            endif
+        else
+            break
+        endif
+    endwhile
+    update
+    call rename(l:from,l:to)
+    
+    " @@@ ここから下
+    " WIndowsのパスをhowmのパスに変換する関数が欲しい
+    let qf = map( split( glob(howm_dir . "/**/*.txt") , "\n" ) , { key,val -> { "filename" : val , "lnum" : 1 , "text" : val , "col" : 1 } } )
+    call setqfixlist(fq)
+    let s:bufn = bufnr("%")
+    execute "cfdo %s/" . l:from . "/" . l:to . "/ge | update"
+    execute "buffer " . bufn
+
+endfunction
+

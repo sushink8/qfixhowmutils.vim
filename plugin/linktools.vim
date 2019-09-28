@@ -19,6 +19,16 @@ function! AppendDiaryLinks()
 	return ""
 endfunction
 
+function! DiaryLinkByDate( date )
+	let l:time = qfixhowmutils#buildTimeFromDate(a:date)
+	if l:time == ""
+		echoerr "invalid date."
+	endif
+	let l:link = BuildHowmDiaryFileLink( l:time )
+	echo l:link
+	let @" = l:link
+endfunction
+
 function! BuildMonthlyLinks()
 	let l:time = TimeFromCurrentFileName()
 	if l:time == ""
