@@ -7,6 +7,14 @@ function! YankCurrentHowmFileLink(...)
 	let @" = s:prefix . qfixhowmutils#howmFilePath("%") . "\n"
 endfunction
 
+function! YankCurrentDateHowmFileLink()
+	let l:time = TimeFromCurrentFileName()
+	if l:time == ""
+		return ""
+	endif
+	let @" = BuildHowmDiaryFileLink(l:time) . "\n"
+endfunction
+
 function! AppendDiaryLinks()
 	let l:time = TimeFromCurrentFileName()
 	if l:time == ""
