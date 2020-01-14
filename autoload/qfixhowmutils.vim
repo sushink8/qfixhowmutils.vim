@@ -180,3 +180,14 @@ function! qfixhowmutils#globalRename()
 
 endfunction
 
+function! qfixhowmutils#allHowmFile()
+  let title = '^'.escape(g:qfixmemo_title, g:qfixmemo_escape)
+  let qfixlist = qfixlist#search(title,g:qfixmemo_dir, g:qfixmemo_list_sort, 0, g:qfixmemo_fileencoding, "**/*")
+  return qfixlist
+endfunction
+
+function! qfixhowmutils#howmDo(cmd)
+  let qf = qfixhowmutils#allHowmFile()
+  call setloclist(0,qf)
+  execute "lfdo " . a:cmd
+endfunction
