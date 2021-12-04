@@ -66,8 +66,15 @@ function! qfixhowmutils#countRegex(lines,regex)
 	return l:c
 endfunction
 
+
 function! qfixhowmutils#buildHowmDiaryFilePath(time)
+	" 時刻( localtime() など）をもとにその日付のhowmファイルを作成する
+	" howm://YYYY/MM/YYYYY-MM-DD-000000.txt
 	return strftime("howm://" . g:QFixHowm_DiaryFile ,a:time)
+endfunction
+
+function! qfixhowmutils#buildHowmDiaryFilePathFromRoot(time)
+	return strftime( g:QFixHowm_DiaryFile ,a:time)
 endfunction
 
 function! qfixhowmutils#buildHowmMonthlyFilePath(time)

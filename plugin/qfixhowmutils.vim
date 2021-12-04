@@ -1,7 +1,18 @@
 
 
+function! EditPrevDiary()
+	let l:time = qfixhowmutils#shiftDate( qfixhowmutils#buildTimeFromFileName("%") , -1 )
+	let l:filename = qfixhowmutils#buildHowmDiaryFilePathFromRoot(l:time)
+	echo l:filename
+	call qfixmemo#EditDiary( l:filename )
+endfunction
 
-
+function! EditNextDiary()
+	let l:time = qfixhowmutils#shiftDate( qfixhowmutils#buildTimeFromFileName("%") , 1 )
+	let l:filename = qfixhowmutils#buildHowmDiaryFilePathFromRoot(l:time)
+	echo l:filename
+	call qfixmemo#EditDiary( l:filename )
+endfunction
 
 
 function! TimeFromCurrentFileName()
